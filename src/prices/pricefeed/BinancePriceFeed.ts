@@ -1,4 +1,3 @@
-import IPriceFeed from "./IPriceFeed";
 import SimplePriceFeed from "./SimplePriceFeed";
 import {IPair} from "../../blockchains/Pair";
 import binance from "../../platforms/Binance";
