@@ -1,0 +1,28 @@
+{
+  "name": "uniswap-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prod": "tsc && node dist/app.js",
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ethers": "^5.0.21",
+    "mongoose": "^5.10.18",
+    "node-binance-api": "^0.12.2",
+    "talib": "^1.1.3",
+    "timeseries-analysis": "^1.0.12",
+    "web3": "^1.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  }
+}
