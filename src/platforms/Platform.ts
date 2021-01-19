@@ -1,6 +1,6 @@
-import IToken from "../blockchains/Token";
+import IToken from "../blockchains/IToken";
 
-interface IPlatform {
+export interface IPlatform {
     api: any,
     readonly name: string,
     getTokens: () => IToken[],

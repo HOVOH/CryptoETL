@@ -9,6 +9,8 @@ export interface IPriceUpdate {
     low: number,
     high: number,
     volume: number,
+    takerBaseAssetVolume: number,
+    tradeQt: number,
     isClose: boolean,
     startTime: number,
     endTime: number,
@@ -28,6 +30,8 @@ class PriceUpdate implements IPriceUpdate{
     readonly origin: IPlatform;
     readonly pair: IPair;
     readonly volume: number;
+    readonly takerBaseAssetVolume: number;
+    readonly tradeQt: number;
     readonly interval: number;
 
     constructor(currentTime: number,
@@ -37,6 +41,8 @@ class PriceUpdate implements IPriceUpdate{
                 low: number,
                 close:number,
                 volume: number,
+                takerBaseAssetVolume: number,
+                tradeQt: number,
                 isClose: boolean,
                 startTime: number,
                 endTime: number,
@@ -49,6 +55,8 @@ class PriceUpdate implements IPriceUpdate{
         this.low = low;
         this.close = close;
         this.volume = volume;
+        this.takerBaseAssetVolume = takerBaseAssetVolume;
+        this.tradeQt = tradeQt;
         this.isClose = isClose;
         this.startTime = startTime;
         this.endTime = endTime;

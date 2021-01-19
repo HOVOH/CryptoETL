@@ -1,4 +1,4 @@
-import IToken from "./blockchains/Token";
+import IToken from "./blockchains/IToken";
 import IPlatform from "./platforms/Platform";
 
 interface IAsset {

@@ -1,0 +1,38 @@
+type Query {
+    hello(name: String!): String
+}
+
+type Subscription {
+    newPrice(token0:String!,token1:String!): PriceUpdate!,
+}
+
+type Token {
+    ticker: String!,
+}
+
+type Pair{
+    token0: Token!,
+    token1: Token!,
+}
+
+type Platform {
+    name: String!,
+}
+
+type PriceUpdate {
+    currentTime: Int!,
+    pair: Pair!,
+    open: Float!,
+    close: Float!,
+    low: Float!,
+    high: Float!,
+    volume: Float!,
+    takerBaseAssetVolume: Float,
+    tradeQt: Float,
+    isClose: Boolean!,
+    startTime: Int!,
+    endTime: Int!,
+    origin: Platform!,
+    interval: String!,
+
+}

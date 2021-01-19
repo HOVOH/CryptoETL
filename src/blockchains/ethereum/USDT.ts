@@ -1,6 +1,6 @@
-import SimpleToken from "../SimpleToken";
+import ERC20 from "./ERC20";
 
-class USDTToken extends SimpleToken {
+class USDTToken extends ERC20 {
     constructor() {
         super("USDT");
     }

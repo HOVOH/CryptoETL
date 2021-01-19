@@ -24,11 +24,12 @@ abstract class SimplePriceFeed implements IPriceFeed {
     subscribe = (pair: IPair, interval: number): void => {
         if (!this.alreadySubscribed(pair, interval)){
             this.registerListener(pair, interval);
+            this.subscriptions.push({pair, interval});
         }
     }
 
     alreadySubscribed = (pair: IPair, interval: number): boolean => {
-        return !!this.subscriptions.find(sub => sub.pair === pair && sub.interval === interval);
+        return !!this.subscriptions.find(sub => sub.pair.toString() === pair.toString() && sub.interval === interval);
     }
 
     abstract registerListener(pair: IPair, interval: number): void ;

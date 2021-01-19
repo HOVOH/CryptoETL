@@ -1,7 +1,6 @@
-import IToken from "../Token";
-import SimpleToken from "../SimpleToken";
+import ERC20 from "./ERC20";
 
-class ETHToken extends SimpleToken {
+class ETHToken extends ERC20 {
     constructor() {
         super("ETH");
     }

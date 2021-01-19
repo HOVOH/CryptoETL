@@ -1,4 +1,4 @@
-import IToken from "./Token";
+import IToken from "./IToken";
 
 abstract class SimpleToken implements IToken {
     readonly ticker: string;

@@ -6,18 +6,18 @@ import {USDT} from "./blockchains/ethereum/USDT";
 import binance from "./platforms/Binance";
 import PriceHistory from "./prices/PriceHistory";
 import TaLib from "./technicalAnalysis/TaLib";
+import {API} from "./api/API";
 
 const priceFeedAggregator = new PriceFeedAggregator();
 priceFeedAggregator.registerPriceFeed(new BinancePriceFeed());
 
-const priceHistory = new PriceHistory(10);
+API.bootstrap(priceFeedAggregator).then(() => {
+    API.start().then(r => console.log("API started on "+r.url));
+});
 
-priceFeedAggregator.subscribeLive(new Pair(ETH, USDT),1, binance, pu => {
-    priceHistory.push(pu);
-    console.log(priceHistory.history.map(pu => ({close: pu.isClose, price: pu.close})));
-})
+
 const marketData = {
-    close: [ 10,20,30,40],
+    close: [ 0.1,0.2,0.1,0.2],
     high: [12, 22,32, 42],
     low: [9, 9, 9, 9],
 }

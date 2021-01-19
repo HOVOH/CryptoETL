@@ -1,4 +1,5 @@
-import IToken from "./Token";
+import IToken from "./IToken";
+import {tokenRegistry} from "./TokenRegistry";
 
 export interface IPair {
     readonly token0: IToken,
@@ -16,4 +17,8 @@ export class Pair implements IPair {
     }
 
     toString = () => this.token0.ticker+this.token1.ticker;
+
+    static fromTickers(ticker0: string, ticker1: string){
+        return new Pair(tokenRegistry.find(ticker0), tokenRegistry.find(ticker1))
+    }
 }

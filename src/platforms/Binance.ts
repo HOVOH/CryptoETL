@@ -1,7 +1,7 @@
 import BinanceAPI from "node-binance-api";
 import env from "../env";
 import {Platform} from "./Platform";
-import IToken from "../blockchains/Token";
+import IToken from "../blockchains/IToken";
 
 const binanceAPI = new BinanceAPI().options({
     APIKEY: env.BINANCE_KEY,

@@ -5,7 +5,7 @@ interface IEnv {
     WS_PROVIDER: string,
     BINANCE_SECRET: string,
     BINANCE_KEY: string,
-
+    API_PORT: number,
 }
 
 const result = dotenv.config();
