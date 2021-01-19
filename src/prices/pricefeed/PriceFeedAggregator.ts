@@ -26,8 +26,8 @@ class PriceFeedAggregator {
         return this.priceFeeds.find(priceFeeder=> priceFeeder.platform === platform);
     }
 
-    subscribeLive(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=>void) {
-        this.subscribe(pair, interval, platform,(priceUpdate: IPriceUpdate)=>{
+    subscribeLive(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=>void): ()=>void {
+        return this.subscribe(pair, interval, platform,(priceUpdate: IPriceUpdate)=>{
             if (priceUpdate.interval === interval){
                 callback(priceUpdate);
             }
@@ -37,13 +37,18 @@ class PriceFeedAggregator {
     private subscribe(pair: IPair,
                       interval:number,
                       platform: IPlatform,
-                      callback: (priceUpdate: IPriceUpdate)=> void){
+                      callback: (priceUpdate: IPriceUpdate)=> void): ()=>void{
         const priceFeeder = this.getPriceFeeder(platform);
         if (!priceFeeder){
             throw `${platform.name} has no price feed registered`;
         }
         priceFeeder.subscribe(pair,interval);
         this.eventEmitter.on(pair.toString(), callback);
+        return () => this.unsubscribe(pair, callback);
+    }
+
+    private unsubscribe(pair: IPair, callback: (priceUpdate: IPriceUpdate)=> void){
+        this.eventEmitter.removeListener(pair.toString(), callback)
     }
 
     subscribeOnClose(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=> void){
