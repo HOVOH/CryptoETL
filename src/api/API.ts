@@ -15,6 +15,14 @@ export class API {
     static resolvers: any = {
         Subscription: {
             newPrice
+        },
+        PriceUpdate: {
+            technicalIndicator: (root) => root
+        },
+        TechnicalIndicator: {
+            bband: (root) => {
+                return 0.01
+            }
         }
     };
     static server = null;

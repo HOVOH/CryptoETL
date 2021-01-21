@@ -34,5 +34,9 @@ type PriceUpdate {
     endTime: Int!,
     origin: Platform!,
     interval: String!,
+    technicalIndicator: TechnicalIndicator!,
+}
 
+type TechnicalIndicator{
+    bband: Float,
 }

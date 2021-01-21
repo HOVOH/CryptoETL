@@ -1,4 +1,4 @@
-import {Resolver} from "./Resolver";
+import {SubscriptionResolver} from "./SubscriptionResolver";
 import {API, IAPIContext} from "./API";
 import {NEW_PRICE_EVENT} from "./priceFeed/newPrice";
 

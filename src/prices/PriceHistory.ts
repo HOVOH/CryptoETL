@@ -1,28 +1,26 @@
 import {IPriceUpdate} from "./pricefeed/PriceUpdate";
-import {main as TimeSeries} from "timeseries-analysis";
 
 export interface IPriceHistory {
     getLatest(): IPriceUpdate,
-    getLatestPrices(n: number): IPriceUpdate[],
+    getLatestPrices(n: number): IPriceHistory,
     push(priceUpdate: IPriceUpdate): void,
 }
 
 export default class PriceHistory implements IPriceHistory{
     history: IPriceUpdate[];
     max: number;
-    series: TimeSeries;
 
-    constructor(maxSize: number) {
+    constructor(maxSize: number, history: IPriceUpdate[] = []) {
         this.max = maxSize;
-        this.history = [];
+        this.history = history;
     }
 
     private getHistory(){
         return this.history;
     }
 
-    getLatestPrices(n: number): IPriceUpdate[] {
-        return this.getHistory().slice(0, n);
+    getLatestPrices(n: number): PriceHistory {
+        return new PriceHistory(n, this.getHistory().slice(0, n));
     }
 
     getLatest(): IPriceUpdate {

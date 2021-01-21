@@ -1,8 +1,17 @@
 import {IPair} from "../../blockchains/Pair";
 import IPlatform from "../../platforms/Platform";
 
-export interface IPriceUpdate {
-    currentTime: number,
+export interface IKLine {
+    timestamp: number,
+    open: number,
+    high: number,
+    low: number,
+    close: number,
+    volume: number,
+}
+
+export interface IPriceUpdate extends IKLine {
+    timestamp: number,
     pair: IPair,
     open: number,
     close: number,
@@ -19,7 +28,7 @@ export interface IPriceUpdate {
 }
 
 class PriceUpdate implements IPriceUpdate{
-    readonly currentTime: number;
+    readonly timestamp: number;
     readonly close: number;
     readonly high: number;
     readonly isClose: boolean;
@@ -48,7 +57,7 @@ class PriceUpdate implements IPriceUpdate{
                 endTime: number,
                 interval: number,
                 origin: IPlatform) {
-        this.currentTime = currentTime;
+        this.timestamp = currentTime;
         this.pair = pair;
         this.open = open;
         this.high = high;
