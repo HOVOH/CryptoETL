@@ -1,18 +1,41 @@
-import {IPriceUpdate} from "./pricefeed/PriceUpdate";
+import PriceUpdate, {IPriceUpdate} from "./pricefeed/PriceUpdate";
+import PriceFeedAggregator from "./pricefeed/PriceFeedAggregator";
+import {IKLine} from "./pricefeed/KLine";
+import {IMonitor} from "./Monitor";
+import {TimeSeries} from "../technicalAnalysis/TimeSeries";
+import {batchCandleJSON} from "candlestick-convert";
 
 export interface IPriceHistory {
     getLatest(): IPriceUpdate,
     getLatestPrices(n: number): IPriceHistory,
-    push(priceUpdate: IPriceUpdate): void,
+    add(priceUpdate: IPriceUpdate): void,
 }
 
 export default class PriceHistory implements IPriceHistory{
-    history: IPriceUpdate[];
+    history: IKLine[];
+    timeSeries: TimeSeries;
+    monitor: IMonitor;
     max: number;
+    priceFeed: PriceFeedAggregator;
+    unsubscribe?: () => void;
 
-    constructor(maxSize: number, history: IPriceUpdate[] = []) {
+    constructor(maxSize: number, history: IKLine[] = []) {
         this.max = maxSize;
         this.history = history;
+        this.timeSeries = new TimeSeries();
+        this.history.forEach(candle => this.timeSeries.unshift(candle));
+    }
+
+    static fromDataSource(maxSize: number, monitor: IMonitor, priceFeed: PriceFeedAggregator): PriceHistory{
+        const priceHistory = new PriceHistory(maxSize, this.loadData(monitor, null));
+        priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.origin, priceHistory.add.bind(priceHistory));
+        return priceHistory;
+    }
+
+    private static loadData(monitor: IMonitor, source): IKLine[]{
+        const candles: IKLine[] = [];
+        return candles;
+
     }
 
     private getHistory(){
@@ -24,21 +47,36 @@ export default class PriceHistory implements IPriceHistory{
     }
 
     getLatest(): IPriceUpdate {
-        return this.getHistory()[0];
+        return new PriceUpdate(this.getHistory()[0], this.monitor);
     }
 
-    push(priceUpdate: IPriceUpdate): void {
+    add(priceUpdate: IPriceUpdate): void {
         if (this.getHistory().length > 0){
             if (this.getHistory()[0].isClose){
-                this.getHistory().unshift(priceUpdate);
+                this.unshift(priceUpdate.candle);
                 if (this.getHistory().length > this.max){
-                    this.getHistory().pop();
+                    this.pop();
                 }
             } else {
-                this.getHistory()[0] = priceUpdate;
+                this.replaceLast(priceUpdate.candle)
             }
         } else {
-            this.getHistory().push(priceUpdate);
+            this.unshift(priceUpdate.candle);
         }
+    }
+
+    private unshift(candle: IKLine){
+        this.getHistory().unshift(candle);
+        this.timeSeries.unshift(candle);
+    }
+
+    private pop(){
+        this.getHistory().pop();
+        this.timeSeries.pop();
+    }
+
+    private replaceLast(candle:IKLine){
+        this.getHistory()[0] = candle;
+        this.timeSeries.replace(0, candle);
     }
 }

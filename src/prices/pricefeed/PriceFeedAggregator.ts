@@ -13,7 +13,7 @@ class PriceFeedAggregator {
         if (!this.alreadyRegistered(priceFeed)){
             this.priceFeeds.push(priceFeed);
             priceFeed.onPriceUpdate(priceUpdate => {
-                this.eventEmitter.emit(priceUpdate.pair.toString(), priceUpdate);
+                this.eventEmitter.emit(priceUpdate.meta.pair.toString(), priceUpdate);
             })
         }
     }
@@ -28,7 +28,7 @@ class PriceFeedAggregator {
 
     subscribeLive(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=>void): ()=>void {
         return this.subscribe(pair, interval, platform,(priceUpdate: IPriceUpdate)=>{
-            if (priceUpdate.interval === interval){
+            if (priceUpdate.meta.interval === interval){
                 callback(priceUpdate);
             }
         })
@@ -53,7 +53,7 @@ class PriceFeedAggregator {
 
     subscribeOnClose(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=> void){
         this.subscribe(pair, interval, platform,(priceUpdate: IPriceUpdate)=>{
-            if (priceUpdate.isClose && priceUpdate.interval === interval){
+            if (priceUpdate.candle.isClose && priceUpdate.meta.interval === interval){
                 callback(priceUpdate);
             }
         })

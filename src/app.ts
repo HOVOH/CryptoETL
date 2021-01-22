@@ -8,6 +8,7 @@ import PriceHistory from "./prices/PriceHistory";
 import TaLib from "./technicalAnalysis/TaLib";
 import {API} from "./api/API";
 import {TimeSeries} from "./technicalAnalysis/TimeSeries";
+import Monitor from "./prices/Monitor";
 
 const priceFeedAggregator = new PriceFeedAggregator();
 priceFeedAggregator.registerPriceFeed(new BinancePriceFeed());
@@ -16,16 +17,7 @@ API.bootstrap(priceFeedAggregator).then(() => {
     API.start().then(r => console.log("API started on "+r.url));
 });
 
-const ts = new TimeSeries();
-ts.append({
-    timestamp: 1,
-    open: 1,
-    high: 1,
-    low: 1,
-    close: 1,
-    volume: 10,
-})
-console.log(ts.open)
+const priceHistory = PriceHistory.fromDataSource(3, new Monitor(new Pair(ETH,USDT), binance, 1), priceFeedAggregator);
 
 // const marketData = {
 //     close: [ 0.1,0.2,0.1,0.2],

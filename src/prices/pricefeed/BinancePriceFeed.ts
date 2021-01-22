@@ -2,6 +2,8 @@ import SimplePriceFeed from "./SimplePriceFeed";
 import {IPair} from "../../blockchains/Pair";
 import binance from "../../platforms/Binance";
 import PriceUpdate from "./PriceUpdate";
+import KLine from "./KLine";
+import Monitor from "../Monitor";
 
 class BinancePriceFeed extends SimplePriceFeed{
 
@@ -27,9 +29,8 @@ class BinancePriceFeed extends SimplePriceFeed{
                 n: tradeQt,
 
             } = ticks;
-            this.emit(new PriceUpdate(
+            const kline = new KLine(
                 currentTime,
-                pair,
                 open,
                 high,
                 low,
@@ -37,12 +38,9 @@ class BinancePriceFeed extends SimplePriceFeed{
                 volume,
                 takerBaseAssetVolume,
                 tradeQt,
-                isFinal,
-                start,
-                end,
-                interval,
-                this.platform,
-            ));
+                isFinal
+            );
+            this.emit(new PriceUpdate(kline, new Monitor(pair, this.platform, interval)));
         });
     }
 }
