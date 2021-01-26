@@ -6,6 +6,11 @@ interface IEnv {
     BINANCE_SECRET: string,
     BINANCE_KEY: string,
     API_PORT: number,
+    DB_USER:string,
+    DB_PASSWORD: string,
+    DB_HOST: string,
+    DB_PORT: number,
+    DB_NAME: string,
 }
 
 const result = dotenv.config();

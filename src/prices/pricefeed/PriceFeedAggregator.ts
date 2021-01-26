@@ -51,8 +51,8 @@ class PriceFeedAggregator {
         this.eventEmitter.removeListener(pair.toString(), callback)
     }
 
-    subscribeOnClose(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=> void){
-        this.subscribe(pair, interval, platform,(priceUpdate: IPriceUpdate)=>{
+    subscribeOnClose(pair: IPair, interval:number, platform: IPlatform, callback: (priceUpdate: IPriceUpdate)=> void): () => void {
+        return this.subscribe(pair, interval, platform,(priceUpdate: IPriceUpdate)=>{
             if (priceUpdate.candle.isClose && priceUpdate.meta.interval === interval){
                 callback(priceUpdate);
             }

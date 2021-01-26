@@ -20,7 +20,7 @@
     "ethers": "^5.0.21",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
-    "mongoose": "^5.10.18",
+    "mongodb": "^3.6.3",
     "node-binance-api": "^0.12.2",
     "reflect-metadata": "^0.1.13",
     "talib": "^1.1.3",

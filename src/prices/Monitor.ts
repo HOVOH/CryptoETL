@@ -3,20 +3,25 @@ import IPlatform from "../platforms/Platform";
 
 export interface IMonitor {
     pair: IPair,
-    origin: IPlatform,
+    platform: IPlatform,
     interval: number,
+    toString(): string;
 }
 
 class Monitor implements IMonitor {
 
     interval: number;
-    origin: IPlatform;
+    platform: IPlatform;
     pair: IPair;
 
     constructor(pair: IPair, origin: IPlatform, interval: number) {
         this.pair = pair;
-        this.origin = origin;
+        this.platform = origin;
         this.interval = interval;
+    }
+
+    toString():string {
+        return this.platform.name+":"+this.pair.toString()+":"+this.interval
     }
 }
 

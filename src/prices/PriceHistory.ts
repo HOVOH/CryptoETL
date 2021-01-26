@@ -28,7 +28,7 @@ export default class PriceHistory implements IPriceHistory{
 
     static fromDataSource(maxSize: number, monitor: IMonitor, priceFeed: PriceFeedAggregator): PriceHistory{
         const priceHistory = new PriceHistory(maxSize, this.loadData(monitor, null));
-        priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.origin, priceHistory.add.bind(priceHistory));
+        priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, priceHistory.add.bind(priceHistory));
         return priceHistory;
     }
 

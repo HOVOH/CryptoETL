@@ -1,5 +1,5 @@
-import {Pair} from "../../blockchains/Pair";
-import binance from "../../platforms/Binance";
+import {Pair} from "../../../blockchains/Pair";
+import binance from "../../../platforms/Binance";
 import {API, IAPIContext} from "../API";
 import {Subscription} from "../Subscription";
 
