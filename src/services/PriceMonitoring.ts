@@ -1,12 +1,13 @@
 import Database from "./database/Database";
 import PriceFeedAggregator from "../prices/pricefeed/PriceFeedAggregator";
 import Monitor from "../prices/Monitor";
+import {MonitorModel} from "./database/Monitors";
 
 class PriceMonitoring {
 
     database: Database;
     priceFeed: PriceFeedAggregator;
-    monitors: Monitor[];
+    monitors: MonitorModel[];
     private unsubscribes: (() => void)[]
 
     constructor(database: Database, priceFeed: PriceFeedAggregator) {
@@ -23,7 +24,8 @@ class PriceMonitoring {
         this.unsubscribes = this.monitors.map(monitor => {
             try {
                 return this.priceFeed.subscribeOnClose(monitor.pair, monitor.interval, monitor.platform, (pu) => {
-                    console.log(pu.candle.close);
+
+                    this.database.klines.save(monitor, pu.candle);
                 })
             } catch (err){
                 console.log(err);

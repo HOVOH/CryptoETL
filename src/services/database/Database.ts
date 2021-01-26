@@ -3,6 +3,7 @@ import env from "../../env";
 import Monitors, {MonitorModel} from "./Monitors";
 import {ICollection} from "./Collection";
 import Monitor from "../../prices/Monitor";
+import KLinesCollection from "./KLines";
 
 class Database {
     connectionString: string;
@@ -10,7 +11,8 @@ class Database {
     client: MongoClient;
     isOpen: boolean = false;
     db: any;
-    monitors: ICollection<Monitor, MonitorModel>
+    monitors: ICollection<Monitor, MonitorModel>;
+    klines: KLinesCollection;
 
     constructor(host: string, port: number, database: string, user: string, password: string) {
         this.connectionString = `mongodb://${user}:${password}@${host}:${port}?poolSize=20&w=majority`;
@@ -37,6 +39,7 @@ class Database {
 
     private createCollections(){
         this.monitors = new Monitors(this);
+        this.klines = new KLinesCollection(this);
     }
 
     close(){
