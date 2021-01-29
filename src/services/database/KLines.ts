@@ -1,9 +1,8 @@
-import {ICollection, Query} from "./Collection";
-import KLine, {IKLine} from "../../prices/pricefeed/KLine";
-import {IModel} from "./Model";
+import KLine, {IKLine} from "../../prices/KLine";
 import {ObjectId} from "mongodb";
 import Database from "./Database";
 import {MonitorModel} from "./Monitors";
+import {timeToDate} from "../../utils/timeUtils";
 
 class KlineModel extends KLine{
     monitorId: ObjectId;
@@ -36,7 +35,7 @@ class KLinesCollection {
     }
 
     async save(monitorModel:MonitorModel, candle: IKLine): Promise<KlineModel> {
-        const date = this.timeToDate(candle.time);
+        const date = timeToDate(candle.time);
         const dayExists = await this.getCollection().findOne({date});
         if (!dayExists){
             await this.getCollection().insertOne({date});
@@ -54,13 +53,8 @@ class KLinesCollection {
             );
     }
 
-    private timeToDate(timestamp: number){
-        const time = new Date(timestamp);
-        time.setUTCHours(0);
-        time.setUTCMinutes(0);
-        time.setUTCSeconds(0);
-        time.setUTCMilliseconds(0);
-        return time;
+    findAll(from: number, to: number){
+
     }
 
 }

@@ -1,5 +1,5 @@
-import PriceFeedAggregator from "./prices/pricefeed/PriceFeedAggregator";
-import BinancePriceFeed from "./prices/pricefeed/BinancePriceFeed";
+import PriceFeedAggregator from "./services/pricefeed/PriceFeedAggregator";
+import BinancePriceFeed from "./services/pricefeed/BinancePriceFeed";
 import {Pair} from "./blockchains/Pair";
 import {ETH} from "./blockchains/ethereum/ETH";
 import {USDT} from "./blockchains/ethereum/USDT";

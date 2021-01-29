@@ -1,4 +1,4 @@
-import {IKLine} from "../prices/pricefeed/KLine";
+import {IKLine} from "../prices/KLine";
 
 type ISeries<T> = {
     [k in keyof T]: number[];

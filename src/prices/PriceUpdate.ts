@@ -1,5 +1,5 @@
 import {IKLine} from "./KLine";
-import {IMonitor} from "../Monitor";
+import {IMonitor} from "./Monitor";
 
 
 export interface IPriceUpdate {

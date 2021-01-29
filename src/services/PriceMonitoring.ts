@@ -1,5 +1,5 @@
 import Database from "./database/Database";
-import PriceFeedAggregator from "../prices/pricefeed/PriceFeedAggregator";
+import PriceFeedAggregator from "./pricefeed/PriceFeedAggregator";
 import Monitor from "../prices/Monitor";
 import {MonitorModel} from "./database/Monitors";
 

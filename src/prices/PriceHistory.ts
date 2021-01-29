@@ -1,6 +1,6 @@
-import PriceUpdate, {IPriceUpdate} from "./pricefeed/PriceUpdate";
-import PriceFeedAggregator from "./pricefeed/PriceFeedAggregator";
-import {IKLine} from "./pricefeed/KLine";
+import PriceUpdate, {IPriceUpdate} from "./PriceUpdate";
+import PriceFeedAggregator from "../services/pricefeed/PriceFeedAggregator";
+import {IKLine} from "./KLine";
 import {IMonitor} from "./Monitor";
 import {TimeSeries} from "../technicalAnalysis/TimeSeries";
 import {batchCandleJSON} from "candlestick-convert";

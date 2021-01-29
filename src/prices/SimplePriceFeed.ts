@@ -1,8 +1,8 @@
 import IPriceFeed from "./IPriceFeed";
-import {IPair} from "../../blockchains/Pair";
+import {IPair} from "../blockchains/Pair";
 import EventEmitter from 'events';
 import IPriceUpdate from "./PriceUpdate";
-import IPlatform from "../../platforms/Platform";
+import IPlatform from "../platforms/Platform";
 
 export const PRICE_FEED_UPDATE_EVENT_NAME = "priceUpdate"
 

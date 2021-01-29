@@ -1,9 +1,10 @@
-import SimplePriceFeed from "./SimplePriceFeed";
+import SimplePriceFeed from "../../prices/SimplePriceFeed";
 import {IPair} from "../../blockchains/Pair";
 import binance from "../../platforms/Binance";
-import PriceUpdate from "./PriceUpdate";
-import KLine from "./KLine";
-import Monitor from "../Monitor";
+import PriceUpdate from "../../prices/PriceUpdate";
+import KLine from "../../prices/KLine";
+import Monitor from "../../prices/Monitor";
+import {roundTimeToS} from "../../utils/timeUtils";
 
 class BinancePriceFeed extends SimplePriceFeed{
 
@@ -22,8 +23,6 @@ class BinancePriceFeed extends SimplePriceFeed{
                 l: low,
                 c: close,
                 v: volume,
-                t: start,
-                T: end,
                 x: isFinal,
                 V: takerBaseAssetVolume,
                 n: tradeQt,

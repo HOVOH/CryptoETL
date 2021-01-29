@@ -1,6 +1,6 @@
-import {IPair} from "../../blockchains/Pair";
+import {IPair} from "../blockchains/Pair";
 import IPriceUpdate from "./PriceUpdate";
-import IPlatform from "../../platforms/Platform";
+import IPlatform from "../platforms/Platform";
 
 interface IPriceFeed {
     readonly platform: IPlatform,

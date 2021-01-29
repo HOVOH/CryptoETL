@@ -1,8 +1,8 @@
-import IPriceFeed from "./IPriceFeed";
+import IPriceFeed from "../../prices/IPriceFeed";
 import IPlatform from "../../platforms/Platform";
 import {IPair} from "../../blockchains/Pair";
 import EventEmitter from "events";
-import {IPriceUpdate} from "./PriceUpdate";
+import {IPriceUpdate} from "../../prices/PriceUpdate";
 
 class PriceFeedAggregator {
 

@@ -1,7 +1,7 @@
 import {typeDefs} from "./typeDefs";
 import {ApolloServer, PubSub} from "apollo-server";
 import env from "../../env";
-import PriceFeedAggregator from "../../prices/pricefeed/PriceFeedAggregator";
+import PriceFeedAggregator from "../pricefeed/PriceFeedAggregator";
 import {newPrice} from "./priceFeed/newPrice";
 
 export interface IAPIContext {
