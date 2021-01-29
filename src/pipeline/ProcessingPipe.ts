@@ -1,12 +1,13 @@
 import {IRule} from "./IRule";
 import IPipe from "./IPipe";
+import ValidityThresholdNotReached from "./ValidityThresholdNotReached";
 
 class ProcessingPipe<T> implements IPipe<T, T>{
     rules: IRule<T>[] = [];
     index: number;
     collection: T[];
     validityThreshold: number;
-    invalid: number;
+    invalid: number = 0;
     atomic: boolean;
 
     constructor(validityThreshold = 0.8, atomic: boolean) {
@@ -20,6 +21,7 @@ class ProcessingPipe<T> implements IPipe<T, T>{
 
     async process(elements: T[]): Promise<T[]>{
         this.cleanUp();
+        this.collection = elements;
         for (this.index = 0; this.index < this.collection.length; this.index++){
             try {
                 this.applyRuleOnIndex();

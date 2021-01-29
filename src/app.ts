@@ -26,7 +26,7 @@ database.open().then(async (err) => {
 }).then(() => {
     const monitorService = new PriceMonitoring(database, priceFeedAggregator);
     monitorService.start().then((monitors) => {
-        console.log("Monitoring service started for:");
+        console.log("Monitoring service started for: ");
         monitors.forEach(monitor => console.log(monitor.toString()));
     })
 }).then(async () => {

@@ -12,3 +12,4 @@ class PipeError extends Error implements IPipeError{
     }
 
 }
+export default PipeError;

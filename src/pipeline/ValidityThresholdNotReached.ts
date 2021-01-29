@@ -3,3 +3,4 @@ class ValidityThresholdNotReached extends Error{
         super(message);
     }
 }
+export default ValidityThresholdNotReached;
