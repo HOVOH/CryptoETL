@@ -4,7 +4,7 @@ import binance from "../../platforms/Binance";
 import PriceUpdate from "../../prices/PriceUpdate";
 import KLine from "../../prices/KLine";
 import Monitor from "../../prices/Monitor";
-import {roundTimeToS} from "../../utils/timeUtils";
+import {moneyConvert, MoneyUnits} from "../../utils/dollars";
 
 class BinancePriceFeed extends SimplePriceFeed{
 
@@ -30,12 +30,12 @@ class BinancePriceFeed extends SimplePriceFeed{
             } = ticks;
             const kline = new KLine(
                 currentTime,
-                open,
-                high,
-                low,
-                close,
-                volume,
-                takerBaseAssetVolume,
+                moneyConvert(open, MoneyUnits.DOLLARS, MoneyUnits.BASE),
+                moneyConvert(high, MoneyUnits.DOLLARS, MoneyUnits.BASE),
+                moneyConvert(low, MoneyUnits.DOLLARS, MoneyUnits.BASE),
+                moneyConvert(close, MoneyUnits.DOLLARS, MoneyUnits.BASE),
+                moneyConvert(volume, MoneyUnits.DOLLARS, MoneyUnits.BASE),
+                moneyConvert(takerBaseAssetVolume, MoneyUnits.DOLLARS, MoneyUnits.BASE),
                 tradeQt,
                 isFinal
             );

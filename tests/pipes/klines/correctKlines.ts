@@ -1,0 +1,323 @@
+import {IKLine} from "../../../src/prices/KLine";
+
+const klines: IKLine[] = [
+    {
+        time: 1611984600103,
+        open: '1345.99000000',
+        high: '1350.00000000',
+        low: '1345.92000000',
+        close: '1348.10000000',
+        volume: '466.15751000',
+        takerBaseAssetVolume: '230.54328000',
+        tradeQt: 467,
+        isClose: true
+    },
+        {
+            time: 1611984660557,
+            open: '1348.10000000',
+            high: '1349.07000000',
+            low: '1347.71000000',
+            close: '1348.14000000',
+            volume: '394.15887000',
+            takerBaseAssetVolume: '268.68425000',
+            tradeQt: 302,
+            isClose: true
+        },
+        {
+            time: 1611984720114,
+            open: '1348.15000000',
+            high: '1348.43000000',
+            low: '1345.71000000',
+            close: '1346.72000000',
+            volume: '290.34919000',
+            takerBaseAssetVolume: '168.28388000',
+            tradeQt: 296,
+            isClose: true
+        },
+        {
+            time: 1611984780712,
+            open: '1346.76000000',
+            high: '1346.91000000',
+            low: '1344.43000000',
+            close: '1344.68000000',
+            volume: '303.32983000',
+            takerBaseAssetVolume: '104.29923000',
+            tradeQt: 349,
+            isClose: true
+        },
+        {
+            time: 1611984840038,
+            open: '1344.76000000',
+            high: '1345.29000000',
+            low: '1344.07000000',
+            close: '1344.96000000',
+            volume: '156.47231000',
+            takerBaseAssetVolume: '81.75868000',
+            tradeQt: 227,
+            isClose: true
+        },
+        {
+            time: 1611984900089,
+            open: '1344.94000000',
+            high: '1344.96000000',
+            low: '1342.66000000',
+            close: '1343.90000000',
+            volume: '293.63269000',
+            takerBaseAssetVolume: '185.15890000',
+            tradeQt: 313,
+            isClose: true
+        },
+        {
+            time: 1611984960342,
+            open: '1343.71000000',
+            high: '1343.71000000',
+            low: '1340.53000000',
+            close: '1341.78000000',
+            volume: '434.03075000',
+            takerBaseAssetVolume: '154.99639000',
+            tradeQt: 442,
+            isClose: true
+        },
+        {
+            time: 1611985020239,
+            open: '1341.77000000',
+            high: '1341.78000000',
+            low: '1338.10000000',
+            close: '1338.38000000',
+            volume: '367.70603000',
+            takerBaseAssetVolume: '159.81126000',
+            tradeQt: 571,
+            isClose: true
+        },
+        {
+            time: 1611985080561,
+            open: '1338.16000000',
+            high: '1338.73000000',
+            low: '1335.90000000',
+            close: '1336.17000000',
+            volume: '625.61790000',
+            takerBaseAssetVolume: '339.32663000',
+            tradeQt: 677,
+            isClose: true
+        },
+        {
+            time: 1611985140070,
+            open: '1335.89000000',
+            high: '1349.12000000',
+            low: '1335.87000000',
+            close: '1348.80000000',
+            volume: '2101.36367000',
+            takerBaseAssetVolume: '1337.56947000',
+            tradeQt: 1725,
+            isClose: true
+        },
+        {
+            time: 1611985200041,
+            open: '1349.12000000',
+            high: '1350.94000000',
+            low: '1347.46000000',
+            close: '1350.67000000',
+            volume: '1626.08118000',
+            takerBaseAssetVolume: '1019.32963000',
+            tradeQt: 1159,
+            isClose: true
+        },
+        {
+            time: 1611985260249,
+            open: '1350.67000000',
+            high: '1354.00000000',
+            low: '1350.21000000',
+            close: '1352.11000000',
+            volume: '1453.28733000',
+            takerBaseAssetVolume: '623.07298000',
+            tradeQt: 1421,
+            isClose: true
+        },
+        {
+            time: 1611985320070,
+            open: '1352.35000000',
+            high: '1353.18000000',
+            low: '1348.41000000',
+            close: '1350.01000000',
+            volume: '1069.14833000',
+            takerBaseAssetVolume: '465.68880000',
+            tradeQt: 755,
+            isClose: true
+        },
+        {
+            time: 1611985381221,
+            open: '1350.01000000',
+            high: '1350.01000000',
+            low: '1346.15000000',
+            close: '1346.33000000',
+            volume: '402.83667000',
+            takerBaseAssetVolume: '176.34385000',
+            tradeQt: 428,
+            isClose: true
+        },
+        {
+            time: 1611985440820,
+            open: '1346.22000000',
+            high: '1349.16000000',
+            low: '1343.29000000',
+            close: '1346.97000000',
+            volume: '1438.32296000',
+            takerBaseAssetVolume: '811.27363000',
+            tradeQt: 823,
+            isClose: true
+        },
+        {
+            time: 1611985500464,
+            open: '1346.92000000',
+            high: '1347.80000000',
+            low: '1345.49000000',
+            close: '1346.12000000',
+            volume: '513.73862000',
+            takerBaseAssetVolume: '321.71344000',
+            tradeQt: 459,
+            isClose: true
+        },
+        {
+            time: 1611985560073,
+            open: '1346.13000000',
+            high: '1349.39000000',
+            low: '1344.95000000',
+            close: '1346.62000000',
+            volume: '590.80901000',
+            takerBaseAssetVolume: '242.56315000',
+            tradeQt: 532,
+            isClose: true
+        },
+        {
+            time: 1611985620008,
+            open: '1346.52000000',
+            high: '1347.33000000',
+            low: '1344.03000000',
+            close: '1344.30000000',
+            volume: '433.42064000',
+            takerBaseAssetVolume: '252.31751000',
+            tradeQt: 363,
+            isClose: true
+        },
+        {
+            time: 1611985680095,
+            open: '1344.37000000',
+            high: '1344.61000000',
+            low: '1342.51000000',
+            close: '1342.52000000',
+            volume: '317.97830000',
+            takerBaseAssetVolume: '116.71077000',
+            tradeQt: 410,
+            isClose: true
+        },
+        {
+            time: 1611985740026,
+            open: '1342.51000000',
+            high: '1346.77000000',
+            low: '1342.45000000',
+            close: '1345.94000000',
+            volume: '958.05168000',
+            takerBaseAssetVolume: '512.33436000',
+            tradeQt: 538,
+            isClose: true
+        },
+        {
+            time: 1611985800117,
+            open: '1345.94000000',
+            high: '1345.94000000',
+            low: '1342.68000000',
+            close: '1342.98000000',
+            volume: '501.93689000',
+            takerBaseAssetVolume: '317.83138000',
+            tradeQt: 406,
+            isClose: true
+        },
+        {
+            time: 1611985860198,
+            open: '1343.02000000',
+            high: '1344.34000000',
+            low: '1342.46000000',
+            close: '1343.70000000',
+            volume: '246.12780000',
+            takerBaseAssetVolume: '129.07989000',
+            tradeQt: 268,
+            isClose: true
+        },
+        {
+            time: 1611985920721,
+            open: '1343.70000000',
+            high: '1347.05000000',
+            low: '1343.64000000',
+            close: '1346.29000000',
+            volume: '319.11792000',
+            takerBaseAssetVolume: '166.37728000',
+            tradeQt: 296,
+            isClose: true
+        },
+        {
+            time: 1611985980385,
+            open: '1346.29000000',
+            high: '1346.30000000',
+            low: '1343.00000000',
+            close: '1343.27000000',
+            volume: '385.65914000',
+            takerBaseAssetVolume: '272.24188000',
+            tradeQt: 335,
+            isClose: true
+        },
+        {
+            time: 1611986160748,
+            open: '1341.60000000',
+            high: '1341.60000000',
+            low: '1339.43000000',
+            close: '1340.53000000',
+            volume: '743.91444000',
+            takerBaseAssetVolume: '364.12246000',
+            tradeQt: 799,
+            isClose: true
+        },
+        {
+            time: 1611986220828,
+            open: '1340.52000000',
+            high: '1343.22000000',
+            low: '1339.89000000',
+            close: '1339.94000000',
+            volume: '463.51821000',
+            takerBaseAssetVolume: '236.92422000',
+            tradeQt: 464,
+            isClose: true
+        },
+        {
+            time: 1611986280161,
+            open: '1339.94000000',
+            high: '1341.01000000',
+            low: '1338.43000000',
+            close: '1338.90000000',
+            volume: '634.32985000',
+            takerBaseAssetVolume: '336.08613000',
+            tradeQt: 650,
+            isClose: true
+        },
+        {
+            time: 1611986340313,
+            open: '1339.01000000',
+            high: '1339.16000000',
+            low: '1336.24000000',
+            close: '1336.99000000',
+            volume: '619.45486000',
+            takerBaseAssetVolume: '271.57182000',
+            tradeQt: 682,
+            isClose: true
+        },
+        {
+            time: 1611986400250,
+            open: '1337.03000000',
+            high: '1338.89000000',
+            low: '1336.76000000',
+            close: '1336.82000000',
+            volume: '367.26417000',
+            takerBaseAssetVolume: '130.53277000',
+            tradeQt: 359,
+            isClose: true
+        }
+    ]

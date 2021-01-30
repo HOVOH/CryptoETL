@@ -10,6 +10,7 @@ import Monitor from "./prices/Monitor";
 import Database from "./services/database/Database";
 import env from "./env";
 import PriceMonitoring from "./services/PriceMonitoring";
+import TaLib from "./technicalAnalysis/TaLib";
 
 const priceFeedAggregator = new PriceFeedAggregator();
 priceFeedAggregator.registerPriceFeed(new BinancePriceFeed());
@@ -44,18 +45,4 @@ database.open().then(async (err) => {
 
 const priceHistory = PriceHistory.fromDataSource(3, new Monitor(new Pair(ETH,USDT), binance, 1), priceFeedAggregator);
 
-// const marketData = {
-//     close: [ 0.1,0.2,0.1,0.2],
-//     high: [12, 22,32, 42],
-//     low: [9, 9, 9, 9],
-// }
-//
-// // Example use of TaLib
-// TaLib.execute({
-//     name: "SMA",
-//     startIdx: 0,
-//     endIdx: marketData.close.length - 1,
-//     inReal: marketData.close,
-//     optInTimePeriod: 2
-// }).then(result => console.log(result));
 
