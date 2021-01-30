@@ -19,15 +19,17 @@ console.log("Connecting to database")
 database.open().then(async (err) => {
     if (!err){
         console.log("Connected to database");
+
     } else {
         console.log("Failed to connect to database: "+err.message);
         throw err;
     }
-}).then(() => {
+}).then( () => {
     const monitorService = new PriceMonitoring(database, priceFeedAggregator);
-    monitorService.start().then((monitors) => {
+    monitorService.start().then(async (monitors) => {
         console.log("Monitoring service started for: ");
         monitors.forEach(monitor => console.log(monitor.toString()));
+        console.log(await database.klines.find(1611984600103, 1611986400250, monitorService.monitors[0]))
     })
 }).then(async () => {
     console.log("Starting API")
@@ -36,6 +38,7 @@ database.open().then(async (err) => {
     console.log("API started on "+res.url);
 }).catch((e)=> {
     console.log("Starting process interrupted");
+    console.log(e)
 });
 
 

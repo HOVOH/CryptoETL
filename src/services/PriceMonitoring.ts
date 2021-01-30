@@ -19,12 +19,11 @@ class PriceMonitoring {
         return await this.load();
     }
 
-    async load(): Promise<Monitor[]> {
+    async load(): Promise<MonitorModel[]> {
         this.monitors = await this.database.monitors.findAll();
         this.unsubscribes = this.monitors.map(monitor => {
             try {
                 return this.priceFeed.subscribeOnClose(monitor.pair, monitor.interval, monitor.platform, (pu) => {
-
                     this.database.klines.save(monitor, pu.candle);
                 })
             } catch (err){

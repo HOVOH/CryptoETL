@@ -36,24 +36,69 @@ class KLinesCollection {
 
     async save(monitorModel:MonitorModel, candle: IKLine): Promise<KlineModel> {
         const date = timeToDate(candle.time);
-        const dayExists = await this.getCollection().findOne({date});
-        if (!dayExists){
-            await this.getCollection().insertOne({date});
+        const doc = {
+            date,
+            monitorId: monitorModel._id,
         }
-        return await this.getCollection().updateOne(
-            {date},
+        const dayExists = await this.getCollection().findOne(doc);
+        if (!dayExists){
+            await this.getCollection().insertOne(doc);
+        }
+        return await this.getCollection().updateOne(doc,
             {
                 $push:{
                     candles: {
-                        monitorId: monitorModel._id,
                         ...candle
                     }
                 }
             }
-            );
+        );
     }
 
-    findAll(from: number, to: number){
+    async find(from: number, to: number, monitor: MonitorModel): Promise<IKLine[]>{
+        const fromDate = timeToDate(from);
+        const toDate = timeToDate(to);
+
+        return await this.getCollection().aggregate([
+            {
+                $match: {
+                    date: {
+                        $gte: fromDate,
+                        $lte: toDate
+                    },
+                    monitorId: monitor._id
+                }
+            }, {
+                $unwind: {
+                    path: "$candles"
+                }
+            }, {
+                $replaceRoot: {
+                    newRoot: "$candles"
+                }
+            }, {
+                $match: {
+                    time: {
+                        $gte: from,
+                        $lte: to
+                    }
+                }
+            }
+        ]).toArray();
+
+/*        await this.getCollection().find({ date: {
+                $gte: fromDate,
+                $lte: toDate
+            },
+            candles: {
+                time:{
+                    $gte: from,
+                    $lte: to,
+                }
+            }
+        }, {
+
+        }).toArray();*/
 
     }
 
