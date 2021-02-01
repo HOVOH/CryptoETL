@@ -10,3 +10,13 @@ export const timeToDate = (timestamp: number) => {
     time.setUTCMilliseconds(0);
     return time;
 }
+
+export const timeOfCandleStart = (timestamp: number, interval: number) => {
+    const date = timeToDate(timestamp);
+    const msElapsed = timestamp - date.getTime();
+    return timestamp - (msElapsed)%(intervalToTime(interval));
+}
+
+export const intervalToTime = (interval: number) => {
+    return interval*60000;
+}

@@ -42,6 +42,23 @@ class KLine implements IKLine {
         this.tradeQt = tradeQt;
         this.isClose = isClose;
     }
+
+    static merge(candle: IKLine, newest:IKLine){
+        if (candle.time > newest.time){
+            throw new Error("Earliest is older than oldest");
+        }
+        return new KLine(
+            candle.time,
+            candle.open,
+            Math.max(candle.high, newest.high),
+            Math.min(candle.low, newest.low),
+            newest.close,
+            candle.volume+newest.volume,
+            candle.takerBaseAssetVolume+newest.takerBaseAssetVolume,
+            candle.tradeQt+newest.tradeQt,
+            newest.isClose,
+        );
+    }
 }
 
 export default KLine;

@@ -20,7 +20,6 @@ console.log("Connecting to database")
 database.open().then(async (err) => {
     if (!err){
         console.log("Connected to database");
-
     } else {
         console.log("Failed to connect to database: "+err.message);
         throw err;
@@ -30,7 +29,6 @@ database.open().then(async (err) => {
     monitorService.start().then(async (monitors) => {
         console.log("Monitoring service started for: ");
         monitors.forEach(monitor => console.log(monitor.toString()));
-        console.log(await database.klines.find(1611984600103, 1611986400250, monitorService.monitors[0]))
     })
 }).then(async () => {
     console.log("Starting API")
