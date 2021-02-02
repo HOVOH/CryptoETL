@@ -83,6 +83,10 @@ class KLinesCollection {
                         $lte: to
                     }
                 }
+            }, {
+                $sort: {
+                    time: -1,
+                }
             }
         ]).toArray();
 

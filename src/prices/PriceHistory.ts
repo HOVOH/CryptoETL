@@ -4,6 +4,12 @@ import {IKLine} from "./KLine";
 import {IMonitor} from "./Monitor";
 import {TimeSeries} from "../technicalAnalysis/TimeSeries";
 import {batchCandleJSON} from "candlestick-convert";
+import Database from "../services/database/Database";
+import {intervalToTime} from "../utils/timeUtils";
+import Pipeline from "../pipeline/Pipeline";
+import KLineValidatorPipe from "./pipeline/KLineValidatorPipe";
+import KLinesConverter from "./pipeline/KLinesConverter";
+import KlineArrayValidator from "./pipeline/KlineArrayValidator";
 
 export interface IPriceHistory {
     getLatest(): IPriceUpdate,
@@ -26,16 +32,32 @@ export default class PriceHistory implements IPriceHistory{
         this.history.forEach(candle => this.timeSeries.unshift(candle));
     }
 
-    static fromDataSource(maxSize: number, monitor: IMonitor, priceFeed: PriceFeedAggregator): PriceHistory{
-        const priceHistory = new PriceHistory(maxSize, this.loadData(monitor, null));
+    static async fromDataSource(maxSize: number, monitor: IMonitor, priceFeed: PriceFeedAggregator, database: Database): Promise<PriceHistory>{
+        const history = await this.loadData(monitor, maxSize*monitor.interval, database)
+        const priceHistory = new PriceHistory(maxSize, history);
         priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, priceHistory.add.bind(priceHistory));
         return priceHistory;
     }
 
-    private static loadData(monitor: IMonitor, source): IKLine[]{
-        const candles: IKLine[] = [];
-        return candles;
+    private static async loadData(monitor: IMonitor, since: number, source:Database): Promise<IKLine[]>{
+        const monitor1m = await source.monitors.findOne({
+            pair: monitor.pair,
+            platform: { name: monitor.platform.name},
+            interval: 1,
+        })
+        const now = Date.now();
+        const klines = await source.klines.find(now-intervalToTime(since), now, monitor1m);
+        const pipeline = this.createPipeline(monitor);
+        return pipeline.process(klines);
 
+    }
+
+    private static createPipeline(monitor: IMonitor): Pipeline<IKLine, IKLine>{
+        const pipeline = new Pipeline<IKLine, IKLine>();
+        pipeline.append(new KLineValidatorPipe());
+        pipeline.append(new KLinesConverter(1, monitor.interval));
+        pipeline.append(new KlineArrayValidator(monitor.interval));
+        return pipeline;
     }
 
     private getHistory(){

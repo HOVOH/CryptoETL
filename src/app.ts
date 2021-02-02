@@ -41,6 +41,4 @@ database.open().then(async (err) => {
 });
 
 
-const priceHistory = PriceHistory.fromDataSource(3, new Monitor(new Pair(ETH,USDT), binance, 1), priceFeedAggregator);
-
 

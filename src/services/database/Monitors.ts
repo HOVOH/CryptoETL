@@ -4,7 +4,7 @@ import {IPair, Pair} from "../../blockchains/Pair";
 import IPlatform from "../../platforms/Platform";
 import Database from "./Database";
 import {IModel} from "./Model";
-import {ICollection, Query} from "./Collection";
+import {ICollection, Optional} from "./Collection";
 import {tokenRegistry} from "../../blockchains/TokenRegistry";
 import {platformRegistry} from "../../platforms/PlatformRegistry";
 
@@ -56,6 +56,19 @@ export class MonitorModel extends Monitor implements IModel<Monitor>{
         const platform = platformRegistry.find(object.platform.name);
         return new MonitorModel(object._id, pair, platform, object.interval, collection);
     }
+
+    static serialize(model: MonitorModel){
+        return {
+            pair: {
+                token0: model.pair.token0,
+                token1: model.pair.token1,
+            },
+            platform: {
+                name: model.platform.name
+            },
+            interval: model.interval,
+        }
+    }
 }
 
 class Monitors implements ICollection<Monitor, MonitorModel>{
@@ -73,7 +86,7 @@ class Monitors implements ICollection<Monitor, MonitorModel>{
         return model;
     }
 
-    async findOne(query:Query<MonitorModel>): Promise<MonitorModel|null>{
+    async findOne(query:Optional<MonitorModel>): Promise<MonitorModel|null>{
         const res = await this.getCollection().findOne(query);
         if (res){
             return this.resultToModel(res);
