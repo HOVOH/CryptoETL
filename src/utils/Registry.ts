@@ -11,8 +11,16 @@ export abstract class Registry<K, T>{
 
     protected abstract findPredicate(key: K): (value: T)=>boolean;
 
-    find(key: K){
-        return this.values.find(this.findPredicate(key));
+    find(key: K): T{
+        const value = this.values.find(this.findPredicate(key));
+        if (value){
+            return value;
+        }
+        return this.orDefault(key);
+    }
+
+    orDefault(key: K): T{
+        return null;
     }
 
 }

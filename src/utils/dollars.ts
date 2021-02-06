@@ -3,7 +3,7 @@ export enum MoneyUnits {
     MILLIONS = 6,
     DOLLARS = 0,
     CENTS = -2,
-    BASE = -10,
+    BASE = -18,
 }
 
 export const moneyConvert = (amount:number, from: MoneyUnits, to: MoneyUnits) => {
