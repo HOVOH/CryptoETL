@@ -15,29 +15,29 @@ export class TimeSeries implements ISeries<IKLine>{
     time: number[] = [];
     tradeQt: number[] = [];
 
-    unshift(kline: IKLine){
-        this.unshiftAll(Object.getOwnPropertyNames(this), kline)
+    push(kline: IKLine){
+        this.pushAll(Object.getOwnPropertyNames(this), kline)
     }
 
-    private unshiftAll(names: string[], kline: IKLine){
-        names.forEach(name => this._unshift(name, kline));
+    private pushAll(names: string[], kline: IKLine){
+        names.forEach(name => this._push(name, kline));
     }
 
-    private _unshift(name:string, kline:IKLine){
-        this[name].unshift(kline[name]);
+    private _push(name:string, kline:IKLine){
+        this[name].push(kline[name]);
     }
 
-    pop(){
-        Object.getOwnPropertyNames(this).forEach(name => this._pop(name));
+    shift(){
+        Object.getOwnPropertyNames(this).forEach(name => this._shift(name));
     }
 
-    private _pop(name: string){
-        this[name].pop()
+    private _shift(name: string){
+        this[name].shift()
     }
 
-    replace(index: number, candle: IKLine){
+    replaceLatest(candle: IKLine){
         Object.getOwnPropertyNames(this)
-            .forEach(name => this[name][index] = candle[name]);
+            .forEach(name => this[name][this[name].length - 1] = candle[name]);
     }
 
     length(): number {

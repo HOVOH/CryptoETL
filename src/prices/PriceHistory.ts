@@ -1,9 +1,8 @@
 import PriceUpdate, {IPriceUpdate} from "./PriceUpdate";
 import PriceFeedAggregator from "../services/pricefeed/PriceFeedAggregator";
 import {IKLine} from "./KLine";
-import {IMonitor} from "./Monitor";
+import Monitor, {IMonitor} from "./Monitor";
 import {TimeSeries} from "../technicalAnalysis/TimeSeries";
-import {batchCandleJSON} from "candlestick-convert";
 import Database from "../services/database/Database";
 import {intervalToTime} from "../utils/timeUtils";
 import Pipeline from "../pipeline/Pipeline";
@@ -14,7 +13,7 @@ import KlineArrayValidator from "./pipeline/KlineArrayValidator";
 export interface IPriceHistory {
     getLatest(): IPriceUpdate,
     getLatestPrices(n: number): IPriceHistory,
-    add(priceUpdate: IPriceUpdate): void,
+    add(ikline: IKLine): void,
 }
 
 export default class PriceHistory implements IPriceHistory{
@@ -25,18 +24,23 @@ export default class PriceHistory implements IPriceHistory{
     priceFeed: PriceFeedAggregator;
     unsubscribe?: () => void;
 
-    constructor(maxSize: number, history: IKLine[] = []) {
+    constructor(maxSize: number, history: IKLine[] = [], monitor: Monitor) {
         this.max = maxSize;
         this.history = history;
+        this.monitor = monitor;
         this.timeSeries = new TimeSeries();
-        this.history.forEach(candle => this.timeSeries.unshift(candle));
+        this.history.forEach(candle => this.timeSeries.push(candle));
     }
 
     static async fromDataSource(maxSize: number, monitor: IMonitor, priceFeed: PriceFeedAggregator, database: Database): Promise<PriceHistory>{
         const history = await this.loadData(monitor, maxSize*monitor.interval, database)
-        const priceHistory = new PriceHistory(maxSize, history);
-        priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, priceHistory.add.bind(priceHistory));
+        const priceHistory = new PriceHistory(maxSize, history, monitor);
+        priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, priceHistory.handlePriceUpdate.bind(priceHistory));
         return priceHistory;
+    }
+
+    handlePriceUpdate(priceUpdate: IPriceUpdate) {
+        this.add(priceUpdate.candle);
     }
 
     private static async loadData(monitor: IMonitor, since: number, source:Database): Promise<IKLine[]>{
@@ -49,7 +53,6 @@ export default class PriceHistory implements IPriceHistory{
         const klines = await source.klines.find(now-intervalToTime(since), now, monitor1m);
         const pipeline = this.createPipeline(monitor);
         return pipeline.process(klines);
-
     }
 
     private static createPipeline(monitor: IMonitor): Pipeline<IKLine, IKLine>{
@@ -65,40 +68,40 @@ export default class PriceHistory implements IPriceHistory{
     }
 
     getLatestPrices(n: number): PriceHistory {
-        return new PriceHistory(n, this.getHistory().slice(0, n));
+        return new PriceHistory(n, this.getHistory().slice(0, n), this.monitor);
     }
 
     getLatest(): IPriceUpdate {
         return new PriceUpdate(this.getHistory()[0], this.monitor);
     }
 
-    add(priceUpdate: IPriceUpdate): void {
+    add(ikline: IKLine): void {
         if (this.getHistory().length > 0){
             if (this.getHistory()[0].isClose){
-                this.unshift(priceUpdate.candle);
+                this.insertNew(ikline);
                 if (this.getHistory().length > this.max){
-                    this.pop();
+                    this.removeOldest();
                 }
             } else {
-                this.replaceLast(priceUpdate.candle)
+                this.replaceNewest(ikline)
             }
         } else {
-            this.unshift(priceUpdate.candle);
+            this.insertNew(ikline);
         }
     }
 
-    private unshift(candle: IKLine){
+    private insertNew(candle: IKLine){
         this.getHistory().unshift(candle);
-        this.timeSeries.unshift(candle);
+        this.timeSeries.push(candle);
     }
 
-    private pop(){
+    private removeOldest(){
         this.getHistory().pop();
-        this.timeSeries.pop();
+        this.timeSeries.shift();
     }
 
-    private replaceLast(candle:IKLine){
+    private replaceNewest(candle:IKLine){
         this.getHistory()[0] = candle;
-        this.timeSeries.replace(0, candle);
+        this.timeSeries.replaceLatest(candle);
     }
 }
