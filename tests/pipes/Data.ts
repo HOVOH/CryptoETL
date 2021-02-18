@@ -1,3 +1,5 @@
+import {iterator} from "../../src/utils/utils";
+
 class Data {
     modified: boolean = false;
     modifiedCounter: number = 0;
@@ -13,6 +15,6 @@ export default Data;
 
 export const generateData = (quantity: number) => {
     const collection: Data[] = [];
-    [...Array(quantity).keys()].forEach(() => collection.push(new Data()));
+    iterator(quantity).forEach(() => collection.push(new Data()));
     return collection;
 }

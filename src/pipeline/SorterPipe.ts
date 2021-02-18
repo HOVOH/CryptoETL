@@ -1,7 +1,7 @@
-import IPipe from "./IPipe";
+import {IBatchPipe} from "./IPipe";
 import {ISorter} from "./ISorter";
 
-class SorterPipe<T> implements IPipe<T, T>{
+class SorterPipe<T> implements IBatchPipe<T, T>{
 
     sorter: ISorter<T>;
 

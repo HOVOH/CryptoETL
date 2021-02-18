@@ -1,16 +1,21 @@
-import IPipe from "./IPipe";
+import {IBatchPipe, IUnitPipe} from "./IPipe";
 
 export interface IPipeline<T, O> {
     process(elements: T[]): Promise<O[]>;
 }
 
-class Pipeline<T, O> implements IPipeline<T, O>{
-    pipes: IPipe<T|O, T|O>[] = [];
+export interface IUnitPipeline<T, O> {
+    processUnit(elements: T[], index: number): Promise<O[]>;
+}
 
-    constructor() {
+export class BatchPipeline<T, O> implements IPipeline<T, O>{
+    pipes: IBatchPipe<T|O, T|O>[] = [];
+
+    constructor(pipes: IBatchPipe<T|O, T|O>[]) {
+        this.pipes = pipes;
     }
 
-    append(pipe: IPipe<T|O, T|O>){
+    append(pipe: IBatchPipe<T|O, T|O>){
         this.pipes.push(pipe);
     }
 
@@ -23,4 +28,23 @@ class Pipeline<T, O> implements IPipeline<T, O>{
     }
 }
 
-export default Pipeline;
+export class UnitPipeline<T, O> implements IUnitPipeline<T, O>{
+
+    pipes: IUnitPipe<T|O, T|O>[] = [];
+
+    constructor(pipes: IUnitPipe<T|O, T|O>[]) {
+        this.pipes = pipes;
+    }
+
+    append(pipe: IUnitPipe<T|O, T|O>){
+        this.pipes.push(pipe);
+    }
+
+    async processUnit(elements: T[], index: number): Promise<O[]>{
+        let product: (T|O)[] = elements;
+        for (const pipe of this.pipes) {
+            product = await pipe.processUnit(product, index);
+        }
+        return <O[]> product;
+    }
+}
