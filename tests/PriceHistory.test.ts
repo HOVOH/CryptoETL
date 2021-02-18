@@ -5,22 +5,22 @@ import {monitorFactory} from "./factories/MonitorFactory";
 import {priceHistoryFactory} from "./factories/PriceHistoryFactory";
 
 describe("PriceHistory", () => {
-    it("pu should be prepended", () => {
+    it("Kline should be ordered from newest to oldest", () => {
         const monitor = monitorFactory();
         const ph = new PriceHistory(2, klineFactory(1, monitor.interval), monitor);
-        const pu = nextKlineFactory(ph.getLatest().candle, monitor.interval);
-        ph.add(pu);
+        const candle = nextKlineFactory(ph.getLatest().candle, monitor.interval);
+        ph.add(candle);
         expect(ph.history.length).eq(2);
-        expect(ph.history[0]).deep.eq(pu);
+        expect(ph.history[0].time).gt(ph.history[1].time);;
     })
 
-    it("pu should be appended to PriceSeries", () => {
+    it("PriceSeries should be ordered from oldest to newest", () => {
         const monitor = monitorFactory();
         const ph:PriceHistory = new PriceHistory(2, klineFactory(1, monitor.interval), monitor);
         const pu = nextKlineFactory(ph.getLatest().candle, monitor.interval);
         ph.add(pu);
         expect(ph.timeSeries.open.length).eq(2);
-        expect(ph.timeSeries.open[1]).eq(pu.open);
+        expect(ph.timeSeries.time[0]).lt(pu.time);
     })
 
     it("pu should replace candle if open", () => {

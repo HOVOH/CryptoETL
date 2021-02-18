@@ -1,6 +1,6 @@
 import {IRule} from "../../pipeline/IRule";
 import {IKLine} from "../KLine";
-import {intervalToTime, timeOfCandleStart} from "../../utils/timeUtils";
+import {timeOfCandleStart} from "../../utils/timeUtils";
 
 export const timeIsNearCloseIfClose: (interval: number) => IRule<IKLine> = (interval: number) => {
     return (kline: IKLine) =>{

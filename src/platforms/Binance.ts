@@ -6,6 +6,7 @@ import IToken from "../blockchains/IToken";
 const binanceAPI = new BinanceAPI().options({
     APIKEY: env.BINANCE_KEY,
     APISECRET: env.BINANCE_SECRET,
+    reconnect: true,
 });
 
 class Binance extends Platform {

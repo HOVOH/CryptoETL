@@ -1,8 +1,8 @@
 import {IRule} from "./IRule";
-import IPipe from "./IPipe";
+import {IBatchPipe, IUnitPipe} from "./IPipe";
 import ValidityThresholdNotReached from "./ValidityThresholdNotReached";
 
-class ProcessingPipe<T> implements IPipe<T, T>{
+class ProcessingPipe<T> implements IBatchPipe<T, T>, IUnitPipe<T, T>{
     rules: IRule<T>[] = [];
     index: number;
     collection: T[];
@@ -22,7 +22,7 @@ class ProcessingPipe<T> implements IPipe<T, T>{
     async process(elements: T[]): Promise<T[]>{
         this.cleanUp();
         this.collection = elements;
-        for (this.index = 0; this.index < this.collection.length; this.index++){
+        for (this.index = this.collection.length - 1; this.index >= 0; this.index--){
             try {
                 this.applyRuleOnIndex();
             } catch (irrecoverablePipeError){
@@ -32,7 +32,7 @@ class ProcessingPipe<T> implements IPipe<T, T>{
                 throw new ValidityThresholdNotReached(`Validity threshold (${this.validityThreshold}) not reached`);
             }
         }
-        this.removeNulls();
+        this.removeNulls();//TODO: This is going to be problematic if other data needs removed data.
         return this.collection;
     }
 
@@ -53,6 +53,13 @@ class ProcessingPipe<T> implements IPipe<T, T>{
             }
         })
         this.collection[this.index] = element;
+    }
+
+    async processUnit(elements: T[], index: number): Promise<T[]>{
+        this.cleanUp();
+        this.collection = elements;
+        this.applyRuleOnIndex()
+        return this.collection;
     }
 
     private removeIndex(){

@@ -15,7 +15,7 @@ export class TimeSeries implements ISeries<IKLine>{
     time: number[] = [];
     tradeQt: number[] = [];
 
-    push(kline: IKLine){
+    addNewest(kline: IKLine){
         this.pushAll(Object.getOwnPropertyNames(this), kline)
     }
 
@@ -27,7 +27,7 @@ export class TimeSeries implements ISeries<IKLine>{
         this[name].push(kline[name]);
     }
 
-    shift(){
+    removeOldest(){
         Object.getOwnPropertyNames(this).forEach(name => this._shift(name));
     }
 
@@ -35,9 +35,19 @@ export class TimeSeries implements ISeries<IKLine>{
         this[name].shift()
     }
 
-    replaceLatest(candle: IKLine){
+    replaceNewest(candle: IKLine){
         Object.getOwnPropertyNames(this)
             .forEach(name => this[name][this[name].length - 1] = candle[name]);
+    }
+
+    addOldest(candle: IKLine){
+        Object.getOwnPropertyNames(this)
+            .forEach(name => this[name].unshift(candle[name]));
+    }
+
+    removeNewest(){
+        Object.getOwnPropertyNames(this)
+            .forEach(name => this[name].pop());
     }
 
     length(): number {

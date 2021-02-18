@@ -1,10 +1,10 @@
-import IPipe from "../../pipeline/IPipe";
+import {IBatchPipe} from "../../pipeline/IPipe";
 import KLine, {IKLine} from "../KLine";
 import {intervalToTime, timeOfCandleStart} from "../../utils/timeUtils";
 import CriticalDataError from "../../pipeline/CriticalDataError";
 import DataError from "../../pipeline/DataError";
 
-class KLinesConverter implements IPipe<IKLine, IKLine>{
+class KLinesConverter implements IBatchPipe<IKLine, IKLine>{
 
     fromInterval: number;
     toInterval: number;
