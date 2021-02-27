@@ -14,6 +14,17 @@ class TaLib {
         })
     }
 
+    static async sma(array: number[], window: number, start = 0){
+        const sma = await this.execute({
+            name: "SMA",
+            startIdx: start,
+            endIdx: array.length - 1,
+            inReal: array,
+            optInTimePeriod: window
+        });
+        return sma.result.outReal
+    }
+
 }
 
 export default TaLib;

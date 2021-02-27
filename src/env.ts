@@ -11,6 +11,8 @@ interface IEnv {
     DB_HOST: string,
     DB_PORT: number,
     DB_NAME: string,
+    DISABLE_MONITORING?: boolean,
+    DISABLE_API?: boolean,
 }
 
 const result = dotenv.config();
@@ -19,4 +21,5 @@ if (result.error) {
     throw result.error;
 }
 const env = result.parsed as unknown as IEnv;
+
 export default env;

@@ -1,16 +1,14 @@
-import {SubscriptionResolver} from "./SubscriptionResolver";
 import {API, IAPIContext} from "./API";
-import {NEW_PRICE_EVENT} from "./priceFeed/newPrice";
 
 export abstract class Subscription{
 
     currentSubscription = {};
 
-    subscribe = (_, args, context: IAPIContext) => {
+    subscribe = async (_, args, context: IAPIContext) => {
         const subName = this.getSubscriptionName(args);
         if (!this.currentSubscription[subName]) {
             this.currentSubscription[subName] = 0;
-            this.onSubscribe(_, args,context);
+            await this.onSubscribe(_, args,context);
         }
         ++this.currentSubscription[subName];
         return this.getAsyncIterator(_, args, context);

@@ -3,7 +3,14 @@ type Query {
 }
 
 type Subscription {
-    newPrice(token0:String!,token1:String!): PriceUpdate!,
+    priceHistory(token0: String!, token1: String!, interval: Int!): PriceHistory!,
+}
+
+type PriceHistory {
+    monitor: Monitor!,
+    latest: Candle!,
+    latests(n: Int): [Candle!]!,
+    sma: [Float!]!
 }
 
 type Token {
@@ -20,8 +27,13 @@ type Platform {
 }
 
 type PriceUpdate {
-    currentTime: Int!,
-    pair: Pair!,
+    candle: Candle!,
+    meta: Monitor!,
+}
+
+type Candle{
+    start: Float!,
+    time: Float!,
     open: Float!,
     close: Float!,
     low: Float!,
@@ -30,11 +42,12 @@ type PriceUpdate {
     takerBaseAssetVolume: Float,
     tradeQt: Float,
     isClose: Boolean!,
-    startTime: Int!,
-    endTime: Int!,
+}
+
+type Monitor {
+    pair: Pair!,
     origin: Platform!,
     interval: String!,
-    technicalIndicator: TechnicalIndicator!,
 }
 
 type TechnicalIndicator{

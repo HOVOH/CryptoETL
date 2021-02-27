@@ -27,7 +27,7 @@ export default class PriceHistory implements IPriceHistory{
     unsubscribe?: () => void;
     readonly eventEmitter = new EventEmitter();
     newDataPipeline: UnitPipeline<IKLine, IKLine> = null;
-    private lastActions: { type: "insertNewest"|"removeOldest"|"replaceNewest", kline: IKLine }[];
+    private lastActions: { type: "insertNewest"|"removeOldest"|"replaceNewest", kline: IKLine }[] = [];
 
     constructor(maxSize: number, history: IKLine[] = [], monitor: Monitor) {
         this.max = maxSize;
@@ -43,7 +43,7 @@ export default class PriceHistory implements IPriceHistory{
         priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, (pu) => priceHistory.handlePriceUpdate(pu));
         priceHistory.newDataPipeline = new UnitPipeline<IKLine, IKLine>([
             new KLineValidatorPipe(),
-            new KlineArrayValidator(1),
+            new KlineArrayValidator(monitor.interval),
         ]);
         return priceHistory;
     }
@@ -55,7 +55,8 @@ export default class PriceHistory implements IPriceHistory{
             interval: 1,
         })
         const now = Date.now();
-        const klines = await source.klines.find(now-intervalToTime(nCandles*monitor.interval), now, monitor1m);
+        const from = now-((now-timeOfCandleStart(now, monitor.interval))+intervalToTime((nCandles-1)*monitor.interval))
+        const klines = await source.klines.find(from, now, monitor1m);
         const pipeline = this.createPipeline(monitor);
         return pipeline.process(klines);
     }
@@ -93,8 +94,9 @@ export default class PriceHistory implements IPriceHistory{
         }
     }
 
-    subscribe(callback: (PriceHistory)=>void){
+    subscribe(callback: (PriceHistory)=>void):()=>void{
         this.eventEmitter.on(PriceHistory.EVENT_NAME, callback);
+        return () => this.eventEmitter.removeListener(PriceHistory.EVENT_NAME, callback);
     }
 
     private getHistory(){
@@ -110,6 +112,7 @@ export default class PriceHistory implements IPriceHistory{
     }
 
     add(ikline: IKLine): void {
+        this.lastActions = [];
         if (this.getHistory().length > 0){
             if (this.getHistory()[0].isClose){
                 this.insertNew(ikline);

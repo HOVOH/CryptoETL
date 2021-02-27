@@ -10,7 +10,6 @@ import Monitor from "./prices/Monitor";
 import Database from "./services/database/Database";
 import env from "./env";
 import PriceMonitoring from "./services/PriceMonitoring";
-import TaLib from "./technicalAnalysis/TaLib";
 
 const priceFeedAggregator = new PriceFeedAggregator();
 priceFeedAggregator.registerPriceFeed(new BinancePriceFeed());
@@ -25,16 +24,21 @@ database.open().then(async (err) => {
         throw err;
     }
 }).then( () => {
+    if (env.DISABLE_MONITORING) return;
     const monitorService = new PriceMonitoring(database, priceFeedAggregator);
     monitorService.start().then(async (monitors) => {
         console.log("Monitoring service started for: ");
         monitors.forEach(monitor => console.log(monitor.toString()));
     })
 }).then(async () => {
+    if (env.DISABLE_API) return;
     console.log("Starting API")
-    await API.bootstrap(priceFeedAggregator);
+    await API.bootstrap(priceFeedAggregator, database);
     const res = await API.start();
     console.log("API started on "+res.url);
+}).then(async () => {
+    const monitor = new Monitor(new Pair(ETH, USDT), binance, 5);
+    const ph = PriceHistory.fromDataSource(5, monitor, priceFeedAggregator, database);
 }).catch((e)=> {
     console.log("Starting process interrupted");
     console.log(e)

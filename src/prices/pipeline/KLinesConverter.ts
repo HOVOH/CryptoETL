@@ -32,7 +32,7 @@ class KLinesConverter implements IBatchPipe<IKLine, IKLine>{
             } catch (e){
                 this.lowQualityCandles++;
                 if (e.throwAway){
-                    throw new CriticalDataError("Too much candles are missing");
+                    throw new CriticalDataError("Too much candles are missing, cannot convert from "+this.fromInterval+" to "+this.toInterval);
                 }
             }
             this.output.push(this.newCandle);

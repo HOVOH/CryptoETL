@@ -1,3 +1,4 @@
+import KLine, {IKLine} from "../prices/KLine";
 
 export enum MoneyUnits {
     MILLIONS = 6,
@@ -17,4 +18,18 @@ export const moneyToBase = (amount: number, from: MoneyUnits) => {
 
 export const baseToMoney = (amount: number, to: MoneyUnits) => {
     return amount*Math.pow(10, MoneyUnits.BASE - to)
+}
+
+export const convertCandle = (candle: IKLine, from: MoneyUnits, to: MoneyUnits) => {
+    return new KLine(
+        candle.time,
+        moneyConvert(candle.open,from, to),
+        moneyConvert(candle.high,from, to),
+        moneyConvert(candle.low,from, to),
+        moneyConvert(candle.close,from, to),
+        moneyConvert(candle.volume,from, to),
+        moneyConvert(candle.takerBaseAssetVolume,from, to),
+        candle.tradeQt,
+        candle.isClose
+    )
 }

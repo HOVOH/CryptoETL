@@ -8,7 +8,12 @@
     "sourceMap": true,
     "outDir": "dist",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@resources": ["resources"],
+      "@src": ["src"]
+    }
   },
   "lib": ["es2015"],
   "exclude": [
