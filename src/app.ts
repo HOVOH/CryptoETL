@@ -36,9 +36,6 @@ database.open().then(async (err) => {
     await API.bootstrap(priceFeedAggregator, database);
     const res = await API.start();
     console.log("API started on "+res.url);
-}).then(async () => {
-    const monitor = new Monitor(new Pair(ETH, USDT), binance, 5);
-    const ph = PriceHistory.fromDataSource(5, monitor, priceFeedAggregator, database);
 }).catch((e)=> {
     console.log("Starting process interrupted");
     console.log(e)

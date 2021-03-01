@@ -1,8 +1,12 @@
 export abstract class Registry<K, T>{
-    private values: T[];
+    private readonly values: T[];
 
     constructor(values: T[] = []) {
         this.values = values;
+    }
+
+    all():T[] {
+        return this.values;
     }
 
     add(t: T){

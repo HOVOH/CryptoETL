@@ -1,6 +1,7 @@
 import {IOHLCV} from "candlestick-convert";
 
 export interface IKLine extends IOHLCV{
+    rtime?: number,
     time: number,
     open: number,
     high: number,

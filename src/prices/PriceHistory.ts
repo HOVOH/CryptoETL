@@ -40,11 +40,13 @@ export default class PriceHistory implements IPriceHistory{
     static async fromDataSource(maxSize: number, monitor: IMonitor, priceFeed: PriceFeedAggregator, database: Database): Promise<PriceHistory>{
         const history = await this.loadData(monitor, maxSize, database)
         const priceHistory = new PriceHistory(maxSize, history, monitor);
-        priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, (pu) => priceHistory.handlePriceUpdate(pu));
-        priceHistory.newDataPipeline = new UnitPipeline<IKLine, IKLine>([
-            new KLineValidatorPipe(),
-            new KlineArrayValidator(monitor.interval),
-        ]);
+        if (priceFeed){
+            priceHistory.unsubscribe = priceFeed.subscribeLive(monitor.pair, monitor.interval, monitor.platform, (pu) => priceHistory.handlePriceUpdate(pu));
+            priceHistory.newDataPipeline = new UnitPipeline<IKLine, IKLine>([
+                new KLineValidatorPipe(),
+                new KlineArrayValidator(monitor.interval),
+            ]);
+        }
         return priceHistory;
     }
 

@@ -1,5 +1,9 @@
+directive @dollars on FIELD_DEFINITION
+
 type Query {
-    hello(name: String!): String
+    pairs: [Pair!]!,
+    monitors: [Monitor!]!,
+    priceHistory(token0: String!, token1: String!, interval: Int!,length: Int!): PriceHistory,
 }
 
 type Subscription {
@@ -9,8 +13,13 @@ type Subscription {
 type PriceHistory {
     monitor: Monitor!,
     latest: Candle!,
-    latests(n: Int): [Candle!]!,
-    sma: [Float!]!
+    candles: [Candle!]!,
+    time: [Float!]! ,
+    open: [Float!]! @dollars,
+    high: [Float!]! @dollars,
+    low: [Float!]! @dollars,
+    close: [Float!]! @dollars,
+    sma: [Float]! @dollars,
 }
 
 type Token {
@@ -34,19 +43,19 @@ type PriceUpdate {
 type Candle{
     start: Float!,
     time: Float!,
-    open: Float!,
-    close: Float!,
-    low: Float!,
-    high: Float!,
-    volume: Float!,
-    takerBaseAssetVolume: Float,
+    open: Float! @dollars,
+    close: Float! @dollars,
+    low: Float! @dollars,
+    high: Float! @dollars,
+    volume: Float! @dollars,
+    takerBaseAssetVolume: Float @dollars,
     tradeQt: Float,
     isClose: Boolean!,
 }
 
 type Monitor {
     pair: Pair!,
-    origin: Platform!,
+    platform: Platform!,
     interval: String!,
 }
 
