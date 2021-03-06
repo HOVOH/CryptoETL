@@ -3,16 +3,15 @@ import {IBatchPipe, IUnitPipe} from "./IPipe";
 import ValidityThresholdNotReached from "./ValidityThresholdNotReached";
 
 class ProcessingPipe<T> implements IBatchPipe<T, T>, IUnitPipe<T, T>{
-    rules: IRule<T>[] = [];
+    rules: IRule<T>[];
     index: number;
     collection: T[];
     validityThreshold: number;
     invalid: number = 0;
-    atomic: boolean;
 
-    constructor(validityThreshold = 0.8, atomic: boolean) {
+    constructor(validityThreshold = 0.8, rules: IRule<T>[] = []) {
         this.validityThreshold = validityThreshold;
-        this.atomic = atomic;
+        this.rules = rules;
     }
 
     addRule(rule: IRule<T>){

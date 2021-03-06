@@ -8,7 +8,7 @@ export const closePriceIsOpenPrice: IRule<IKLine> = (kline, dataset, index) => {
     const prevCandle = dataset[index + 1];
     if (prevCandle.isClose){
         if (kline.open !== prevCandle.close ){
-            kline.open = kline.close;
+            kline.open = prevCandle.close;
         }
     } else {
         if (kline.open !== prevCandle.open){

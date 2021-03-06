@@ -5,7 +5,7 @@ import {roundTimeToStartOfCandle} from "./roundTimeToStartOfCandle";
 
 class KlineArrayValidator extends ProcessingPipe<IKLine>{
     constructor(interval: number) {
-        super(0.8, true);
+        super(0.8);
         this.addRule(closePriceIsOpenPrice);
         this.addRule(roundTimeToStartOfCandle(interval));
     }

@@ -20,6 +20,6 @@ const result = dotenv.config();
 if (result.error) {
     throw result.error;
 }
-const env = result.parsed as unknown as IEnv;
+const env = Object.assign(result.parsed, process.env) as unknown as IEnv;
 
 export default env;

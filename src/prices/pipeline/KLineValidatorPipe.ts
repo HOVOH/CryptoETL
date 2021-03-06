@@ -6,7 +6,7 @@ import ProcessingPipe from "../../pipeline/ProcessingPipe";
 class KLineValidatorPipe extends ProcessingPipe<IKLine>{
 
     constructor(validityThreshold = 0.8) {
-        super(validityThreshold, true);
+        super(validityThreshold);
         this.addRule(lowLessThanHighRule);
         this.addRule(noVolumeRule);
     }

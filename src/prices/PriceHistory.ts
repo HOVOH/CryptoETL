@@ -10,6 +10,8 @@ import KLineValidatorPipe from "./pipeline/KLineValidatorPipe";
 import KLinesConverter from "./pipeline/KLinesConverter";
 import KlineArrayValidator from "./pipeline/KlineArrayValidator";
 import EventEmitter from "events";
+import ProcessingPipe from "../pipeline/ProcessingPipe";
+import {roundTimeToStartOfCandle} from "./pipeline/roundTimeToStartOfCandle";
 
 export interface IPriceHistory {
     getLatest(): IPriceUpdate,
@@ -45,6 +47,7 @@ export default class PriceHistory implements IPriceHistory{
             priceHistory.newDataPipeline = new UnitPipeline<IKLine, IKLine>([
                 new KLineValidatorPipe(),
                 new KlineArrayValidator(monitor.interval),
+                new ProcessingPipe(0.8,[roundTimeToStartOfCandle(monitor.interval)])
             ]);
         }
         return priceHistory;
@@ -75,7 +78,7 @@ export default class PriceHistory implements IPriceHistory{
     async handlePriceUpdate(priceUpdate: IPriceUpdate) {
         try{
             this.add(priceUpdate.candle);
-            await this.newDataPipeline.processUnit(this.history, 0);
+            this.history[0] = (await this.newDataPipeline.processUnit(this.history, 0))[0];
             this.eventEmitter.emit(PriceHistory.EVENT_NAME, this);
         } catch (dataError){
             console.log("Error with ", priceUpdate.candle);

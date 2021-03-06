@@ -15,10 +15,11 @@ export default class PriceHistorySubscripton extends Subscription{
         super();
     }
 
-    onSubscribe = async (_, args, context) => {
+    onSubscribe = async (_, args, context: IAPIContext) => {
         const pair = Pair.fromTickers(args.token0, args.token1);
-        const priceHistory = await PriceHistory.fromDataSource(5, new Monitor(pair, binance, args.interval), context.pricefeedAggregator, context.database);
+        const priceHistory = await PriceHistory.fromDataSource(5, new Monitor(pair, binance, args.interval), context.priceFeedAggregator, context.database);
         this.unsubscribeCallback = priceHistory.subscribe((ph: PriceHistory)=>{
+            const latest = ph.getLatest();
             this.getPubSub().publish(this.getSubscriptionName(args), {priceHistory: ph})
         });
     }

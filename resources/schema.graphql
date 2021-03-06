@@ -19,7 +19,7 @@ type PriceHistory {
     high: [Float!]! @dollars,
     low: [Float!]! @dollars,
     close: [Float!]! @dollars,
-    sma: [Float]! @dollars,
+    sma(window: Int!): [Float]! @dollars,
 }
 
 type Token {
@@ -51,6 +51,7 @@ type Candle{
     takerBaseAssetVolume: Float @dollars,
     tradeQt: Float,
     isClose: Boolean!,
+    sma: Float,
 }
 
 type Monitor {
